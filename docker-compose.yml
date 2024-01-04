@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+    nginx-l2cms:
+        container_name: nginx-l2cms
+        image: nginx:1.24.0
+        restart: "no"
+        ports:
+            - "8088:80"
+        volumes:
+            - .:/var/www/
+            # конфигурация nginx
+            - ./.docker/config/nginx/:/etc/nginx/conf.d/
+            # логи
+            - ./.docker/logs/nginx:/var/log/nginx/
+        networks:
+            - web-network-l2cms
+
+    php-l2cms:
+        build:
+            context: ./.docker/
+        container_name: php-l2cms
+        restart: "no"
+        tty: true
+        working_dir: /var/www
+        volumes:
+            - .:/var/www/
+        networks:
+            - web-network-l2cms
+
+    mysql-l2cms:
+        container_name: mysql-l2cms
+        image: mariadb:11.1.2
+        restart: "no"
+        ports:
+            - "${DB_PORT}:3306"
+        volumes:
+            - ./.docker/logs/mysql/:/var/logs/mysql
+            - db-mysql:/var/lib/mysql
+        security_opt:
+            - seccomp:unconfined
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        networks:
+            - web-network-l2cms
+
+    redis-l2cms:
+        container_name: redis-l2cms
+        image: redis:7.2.1
+        restart: "no"
+        ports:
+            - "${REDIS_PORT}:6379"
+        volumes:
+            - db-redis:/data
+        networks:
+            - web-network-l2cms
+
+volumes:
+    db-mysql:
+    db-redis:
+
+networks:
+    web-network-l2cms:
+        driver: bridge
