@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-    nginx-l2cms:
-        container_name: nginx-l2cms
+    nginx-l2web:
+        container_name: nginx-l2web
         image: nginx:1.24.0
         restart: "no"
         ports:
@@ -14,22 +14,22 @@ services:
             # логи
             - ./.docker/logs/nginx:/var/log/nginx/
         networks:
-            - web-network-l2cms
+            - web-network-l2web
 
-    php-l2cms:
+    php-l2web:
         build:
             context: ./.docker/
-        container_name: php-l2cms
+        container_name: php-l2web
         restart: "no"
         tty: true
         working_dir: /var/www
         volumes:
             - .:/var/www/
         networks:
-            - web-network-l2cms
+            - web-network-l2web
 
-    mysql-l2cms:
-        container_name: mysql-l2cms
+    mysql-l2web:
+        container_name: mysql-l2web
         image: mariadb:11.1.2
         restart: "no"
         ports:
@@ -45,10 +45,10 @@ services:
             MYSQL_USER: ${DB_USERNAME}
             MYSQL_PASSWORD: ${DB_PASSWORD}
         networks:
-            - web-network-l2cms
+            - web-network-l2web
 
-    redis-l2cms:
-        container_name: redis-l2cms
+    redis-l2web:
+        container_name: redis-l2web
         image: redis:7.2.1
         restart: "no"
         ports:
@@ -56,12 +56,12 @@ services:
         volumes:
             - db-redis:/data
         networks:
-            - web-network-l2cms
+            - web-network-l2web
 
 volumes:
     db-mysql:
     db-redis:
 
 networks:
-    web-network-l2cms:
+    web-network-l2web:
         driver: bridge
