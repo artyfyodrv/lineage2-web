@@ -1,0 +1,11 @@
+<ruleset name="essence-web">
+    <description>code style</description>
+    <arg name="colors"/>
+    <arg value="p"/>
+    <arg value="n"/>
+    <arg value="s"/>
+    <arg name="extensions" value="php"/>
+    <config name="ignore_warnings_on_exit" value="1"/>
+    <arg name="ignore" value="vendor/*, node_modules/*, .docker/*, bootstrap/cache/*, storage/*"/>
+    <rule ref="PSR12"> </rule>
+</ruleset>
