@@ -11,13 +11,13 @@ stop:
 start:
 	docker compose start
 php-bash:
-	docker compose exec -it php-l2cms bash
+	docker compose exec -it php-l2web bash
 php-logs:
 	docker compose logs --follow php-l2web
 php-logs-f:
 	docker compose logs --follow php-l2web
 nginx-bash:
-	docker compose exec nginx-l2cms bash
+	docker compose exec nginx-l2web bash
 nginx-logs:
 	docker compose logs nginx-l2web
 nginx-logs-f:
