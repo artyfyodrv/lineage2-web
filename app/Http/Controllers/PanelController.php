@@ -14,6 +14,15 @@ class PanelController extends Controller
         return view('panel.index');
     }
 
+    public function changePasswordPage()
+    {
+        return view('panel.change-password');
+    }
+
+    public function changePassword()
+    {
+    }
+
     public function logout()
     {
         Auth::logout();

@@ -36,9 +36,16 @@
             </div>
         </div>
         <div class="col-md-9">
-            <nav class="navbar navbar-expand-md navbar-dark bg-gray w-120">
-                <div class="navbar-brand" style="color: grey">Ваш ID - {{ Auth::user()->uuid }}</div>
-            </nav>
+            <div class="form-group">
+                <label for="current-password">Текущий пароль</label>
+                <input type="password" class="form-control" id="current-password" placeholder="Введите текущий пароль">
+            </div>
+            <div class="form-group">
+                <label for="new-password">Новый пароль</label>
+                <input type="password" class="form-control" id="new-password" placeholder="Введите новый пароль">
+                <br>
+                <input type="password" class="form-control" id="confirm-password" placeholder="Подтвердите новый пароль">
+            </div>
         </div>
     </div>
 </div>
