@@ -13,4 +13,12 @@ class PanelController extends Controller
         }
         return view('panel.index');
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+        return redirect()->route('login-page');
+    }
 }

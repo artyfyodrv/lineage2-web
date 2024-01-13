@@ -25,4 +25,5 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('panel')->middleware('auth')->group(function () {
     Route::get('/', [PanelController::class, 'index'])->name('panel-page');
+    Route::get('logout', [PanelController::class, 'logout'])->name('logout');
 });

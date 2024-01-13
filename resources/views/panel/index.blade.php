@@ -12,27 +12,33 @@
 <div class="container-fluid">
     <div class="row">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark w-100">
-            <div class="navbar-brand mx-auto" style="color: #ffffff">L2WEB</div>
+            <div class="navbar-brand" style="color: #ffffff">L2WEB</div>
+            <div class="navbar-brand mx-auto" style="color: #ffffff">Учётная запись {{ Auth::user()->login }}</div>
         </nav>
     </div>
     <div class="row">
-        <div class="col-md-3 bg-dark">
+        <div class="col-md-2 bg-dark h-100">
             <div class="sidebar">
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link" href="#" style="color: #ffffff; text-decoration: none;">Профиль</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #ffffff; text-decoration: none;">Настройки</a>
+                        <a class="nav-link" href="#" style="color: #ffffff; text-decoration: none;">Изменить пароль</a>
                     </li>
-                    <li class="nav-item mt-auto">
-                        <a class="btn btn-primary" href="#">Выход</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" style="color: #ffffff; text-decoration: none;">Изменить почту</a>
+                    </li>
+                    <li class="nav-item mt-auto mx-auto">
+                        <a class="btn btn-primary" href="{{ route('logout') }}">Выход</a>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="col-md-9">
-            <!-- Контент личного кабинета -->
+            <nav class="navbar navbar-expand-md navbar-dark bg-gray w-120">
+                <div class="navbar-brand" style="color: grey">Ваш ID - {{ Auth::user()->uuid }}</div>
+            </nav>
         </div>
     </div>
 </div>
