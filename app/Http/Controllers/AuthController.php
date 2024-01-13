@@ -7,6 +7,7 @@ use App\Services\AuthService;
 use App\Services\EmailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class AuthController extends Controller
 {
@@ -17,7 +18,7 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function register()
+    public function register(): View
     {
         return view('auth.register');
     }

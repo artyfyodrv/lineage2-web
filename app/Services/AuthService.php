@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class AuthService
 {
-    public function registration(array $data)
+    public function registration(array $data): User
     {
         $user = new User();
         $user->fill($data);
@@ -18,7 +18,7 @@ class AuthService
         return $user;
     }
 
-    public function verifyEmail(array $request)
+    public function verifyEmail(array $request): bool
     {
         $verifyData = Redis::get($request['user_uuid']);
         $user = User::query()->where('uuid', $request['user_uuid'])->first();
