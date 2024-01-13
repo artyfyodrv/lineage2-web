@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Models\User;
 use App\Services\AuthService;
 use App\Services\EmailService;
 use Illuminate\Http\Request;
@@ -26,9 +27,19 @@ class AuthController extends Controller
 
     public function registration(RegisterRequest $request, EmailService $emailService)
     {
+        $isExists = User::query()->select('login', 'email')->exists();
+
+        if ($isExists) {
+            return redirect()->back()->withErrors([
+                'error-register' => 'Пользователь с таким логином или почтой уже существует'
+            ]);
+        }
+
         $user = $this->authService->registration($request->all());
-        $emailService->sendEmailConfirm($user->email, $user->id);
+        $emailService->sendEmailConfirm($user['email'], $user['id']);
         Auth::login($user);
+
+        return redirect('/panel');
     }
 
     public function emailVerify(Request $request)

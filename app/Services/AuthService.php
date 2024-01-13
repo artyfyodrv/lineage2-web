@@ -13,7 +13,7 @@ class AuthService
     {
         $user = new User();
         $user->fill($data);
-        $user->uuid = Str::uuid()->toString();
+        $user['uuid'] = Str::uuid()->toString();
         $user->save();
 
         return $user;
@@ -24,7 +24,7 @@ class AuthService
         $verifyData = Redis::get($data['user_uuid']);
         $user = User::query()->where('uuid', $data['user_uuid'])->first();
 
-        if ($verifyData && !$user->email_verify) {
+        if ($verifyData && !$user['email_verify']) {
             Redis::del($data['user_uuid']);
             $user->email_verify = true;
             $user->email_verified_at = now();
