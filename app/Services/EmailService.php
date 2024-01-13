@@ -16,6 +16,11 @@ class EmailService
         Mail::to($address)->send(new ConfirmEmail($data));
     }
 
+    /**
+     * Генерация ссылки для отправки на почту пользователю
+     * @param string $route - Имя маршрута для подтверждения почты
+     * @param int $ttl - Время жизни записи в милисекундах
+     */
     private function generateUrl(int $userId, string $route, int $ttl = 1800): array
     {
         $userData = User::query()->find($userId);
