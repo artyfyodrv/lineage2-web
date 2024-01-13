@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\GoogleCaptcha;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -25,6 +26,7 @@ class RegisterRequest extends FormRequest
             'login' => 'required|string|min:6|max:30',
             'email' => 'required|email|max:64',
             'password' => 'required|confirmed|max:60',
+            'g-recaptcha-response' => ['required', new GoogleCaptcha()]
         ];
     }
 
@@ -40,7 +42,8 @@ class RegisterRequest extends FormRequest
             'email.max' => 'Поле почты превысило количество символов',
             'password.required' => 'Поле пароля не может быть пустым',
             'password.confirmed' => 'Пароли не совпадают',
-            'password.max' => 'Поле пароля превысило количество символов'
+            'password.max' => 'Поле пароля превысило количество символов',
+            'g-recaptcha-response.required' => 'Необходимо пройти проверку ReCaptcha',
         ];
     }
 }

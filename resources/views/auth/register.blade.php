@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Регистрация</title>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <body>
 <form action="{{ route('register-form') }}" method="POST">
@@ -33,6 +34,17 @@
 
     <label for="password_confirmation">Подтверждение пароля:</label>
     <input type="password" id="password_confirmation" name="password_confirmation" required><br>
+
+    <div class="col-md-12">
+        <div class="form-group">
+            <strong>ReCaptcha:</strong>
+            <div class="g-recaptcha" data-sitekey="{{ env('RECAPTCHA_SITE_KEY') }}"></div>
+            @if ($errors->has('g-recaptcha-response'))
+                <span class="text-danger">{{ $errors->first('g-recaptcha-response') }}</span>
+            @endif
+        </div>
+    </div>
+
 
     <input type="submit" value="Зарегистрироваться">
 </form>
