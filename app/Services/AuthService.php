@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 
@@ -18,13 +19,13 @@ class AuthService
         return $user;
     }
 
-    public function verifyEmail(array $request): bool
+    public function verifyEmail(array $data): bool
     {
-        $verifyData = Redis::get($request['user_uuid']);
-        $user = User::query()->where('uuid', $request['user_uuid'])->first();
+        $verifyData = Redis::get($data['user_uuid']);
+        $user = User::query()->where('uuid', $data['user_uuid'])->first();
 
         if ($verifyData && !$user->email_verify) {
-            Redis::del($request['user_uuid']);
+            Redis::del($data['user_uuid']);
             $user->email_verify = true;
             $user->email_verified_at = now();
 
@@ -32,5 +33,10 @@ class AuthService
         }
 
         return false;
+    }
+
+    public function auth(array $data)
+    {
+        return Auth::attempt($data);
     }
 }

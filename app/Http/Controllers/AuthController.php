@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use App\Services\EmailService;
@@ -39,5 +40,25 @@ class AuthController extends Controller
         }
 
         abort(404);
+    }
+
+    public function login()
+    {
+        if (Auth::check()) {
+            return redirect('/panel');
+        }
+
+        return view('auth.login');
+    }
+
+    public function auth(LoginRequest $request)
+    {
+        $authService = $this->authService->auth($request->only('login', 'password'));
+
+        if ($authService) {
+            return redirect('/panel');
+        }
+
+        return redirect()->back()->withErrors(['login-error' => 'Неверные логин или пароль']);
     }
 }
