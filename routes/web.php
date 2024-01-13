@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PanelController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,4 +21,8 @@ Route::prefix('auth')->group(function () {
     Route::get('email-verify', [AuthController::class, 'emailVerify'])->name('email-verify');
     Route::get('login', [AuthController::class, 'login'])->name('login-page');
     Route::post('auth', [AuthController::class, 'auth'])->name('login-form');
+});
+
+Route::prefix('panel')->middleware('auth')->group(function () {
+    Route::get('/', [PanelController::class, 'index'])->name('panel-page');
 });
