@@ -16,7 +16,7 @@
     <span class="error">{{ $message }}</span>
     @enderror
 
-    <label for="username">Логин:</label>
+    <label for="login">Логин:</label>
     <input type="text" id="login" name="login" required><br>
 
     @error('email')
@@ -45,7 +45,9 @@
         </div>
     </div>
 
-
+    @error('error-register')
+    <span class="error">{{ $message }}</span>
+    @enderror
     <input type="submit" value="Зарегистрироваться">
 </form>
 </body>
