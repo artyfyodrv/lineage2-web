@@ -19,7 +19,6 @@ class EmailService
     private function generateUrl(int $userId, string $route, int $ttl = 1800): array
     {
         $userData = User::query()->find($userId);
-
         $url = URL::signedRoute($route, ['user_uuid' => $userData->uuid]);
         $data = [
             'user_id' => $userData->id,

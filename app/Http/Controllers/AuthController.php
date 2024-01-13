@@ -3,37 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
-use App\Models\User;
 use App\Services\AuthService;
+use App\Services\EmailService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
+    private $authService;
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
     public function register()
     {
         return view('auth.register');
     }
 
-    public function registration(RegisterRequest $request)
+    public function registration(RegisterRequest $request, EmailService $emailService)
     {
-        $authService = new AuthService();
-        $authService->registration($request->all());
+        $user = $this->authService->registration($request->all());
+        $emailService->sendEmailConfirm($user->email, $user->id);
+        Auth::login($user);
     }
 
     public function emailVerify(Request $request)
     {
-        $verifyData = Redis::get($request->user_uuid);
-        $userData = User::query()->where('uuid', $request->user_uuid)->first();
+        $authService = $this->authService->verifyEmail($request->all());
 
-        if ($verifyData && !$userData->email_verify) {
-            Redis::del($request->user_uuid);
-            $userData->email_verify = true;
-            $userData->email_verified_at = now();
-            $userData->save();
-            dd('Вы успешно подтвердили аккаунт!');
-        } else {
-            echo 'Ваш аккаунт уже был подтверждён!';
+        if ($authService) {
+            return redirect('/panel')->with(['email-verify' => 'Электронная почта успешна подтверждена']);
         }
+
+        abort(404);
     }
 }
