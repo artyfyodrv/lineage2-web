@@ -11,14 +11,17 @@ use Illuminate\Queue\SerializesModels;
 
 class ConfirmEmail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
+
+    protected $data;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -27,7 +30,7 @@ class ConfirmEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address('aofyodrv@yandex.ru', 'Lineage II Web'),
+            from: new Address(env('MAIL_FROM_ADDRESS'), 'Lineage II Web'),
             subject: "Подтверждение электронной почты Lineage II Web",
         );
     }
@@ -39,6 +42,9 @@ class ConfirmEmail extends Mailable
     {
         return new Content(
             view: 'mail.register',
+            with: [
+                'data' => $this->data,
+            ]
         );
     }
 
