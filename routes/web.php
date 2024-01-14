@@ -26,6 +26,6 @@ Route::prefix('auth')->group(function () {
 Route::prefix('panel')->middleware('auth')->group(function () {
     Route::get('/', [PanelController::class, 'index'])->name('panel-page');
     Route::get('change-password', [PanelController::class, 'changePasswordPage'])->name('change-password-page');
-    Route::post('change-password', [PanelController::class, 'changePassword'])->name('change-password-form');
+    Route::post('change-password', [PanelController::class, 'changePassword'])->name('change-password');
     Route::get('logout', [PanelController::class, 'logout'])->name('logout');
 });

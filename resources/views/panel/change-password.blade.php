@@ -36,18 +36,49 @@
             </div>
         </div>
         <div class="col-md-9">
-            <div class="form-group">
-                <label for="current-password">Текущий пароль</label>
-                <input type="password" class="form-control" id="current-password" placeholder="Введите текущий пароль">
-            </div>
-            <div class="form-group">
-                <label for="new-password">Новый пароль</label>
-                <input type="password" class="form-control" id="new-password" placeholder="Введите новый пароль">
-                <br>
-                <input type="password" class="form-control" id="confirm-password" placeholder="Подтвердите новый пароль">
-            </div>
-        </div>
+            <nav class="navbar navbar-expand-md navbar-dark bg-gray w-120">
+                <div class="navbar-brand" style="color: grey">Ваш ID - {{ Auth::user()->uuid }}</div>
+            </nav>
+                <div class="navbar-brand" style="color: grey">Почта - {{ substr(Auth::user()->email, 0, 1) . str_repeat('*', strpos(Auth::user()->email, '@') - 1) . substr(Auth::user()->email, strpos(Auth::user()->email, '@')) }} </div>
+            <form method="POST" action="{{ route('change-password') }}">
+                @csrf
+
+                @error('current_email')
+                <span class="error">{{ $message }}</span>
+                @enderror
+                <div class="form-group">
+                    <label for="current_email">Текущая почта</label>
+                    <input type="email" class="form-control" id="current_email" name="current_email" >
+                </div>
+
+                @error('current_password')
+                <span class="error">{{ $message }}</span>
+                @enderror
+                <div class="form-group">
+                    <label for="current_password">Текущий пароль</label>
+                    <input type="password" class="form-control" id="current_password" name="current_password" >
+                </div>
+
+                @error('new_password')
+                <span class="error">{{ $message }}</span>
+                @enderror
+                <div class="form-group">
+                    <label for="new_password">Новый пароль</label>
+                    <input type="password" class="form-control" id="new_password" name="new_password" >
+                </div>
+
+                <div class="form-group">
+                    <label for="new_password_confirmation">Подтвердите новый пароль</label>
+                    <input type="password" class="form-control" id="new_password_confirmation" name="new_password_confirmation" >
+                </div>
+
+                @error('message-change')
+                <span class="error">{{ ($message) }}</span>
+                @enderror
+                <button type="submit" class="btn btn-primary">Изменить пароль</button>
+            </form>
     </div>
+</div>
 </div>
 </body>
 </html>
