@@ -27,7 +27,7 @@
                         <a class="nav-link" href="{{ route('change-password-page') }}" style="color: #ffffff; text-decoration: none;">Изменить пароль</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="color: #ffffff; text-decoration: none;">Изменить почту</a>
+                        <a class="nav-link" href="{{ route('change-email-page') }}" style="color: #ffffff; text-decoration: none;">Изменить почту</a>
                     </li>
                     <li class="nav-item mt-auto mx-auto">
                         <a class="btn btn-primary" href="{{ route('logout') }}">Выход</a>
@@ -75,6 +75,9 @@
                 @error('message-change')
                 <span class="error">{{ ($message) }}</span>
                 @enderror
+                @if (session('message-change'))
+                    <span class="error">{{ session('message-change') }}</span>
+                @endif
                 <button type="submit" class="btn btn-primary">Изменить пароль</button>
             </form>
     </div>

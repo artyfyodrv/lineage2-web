@@ -27,7 +27,7 @@
                         <a class="nav-link" href="{{ route('change-password-page') }}" style="color: #ffffff; text-decoration: none;">Изменить пароль</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('change-email-page') }}" style="color: #ffffff; text-decoration: none;">Изменить почту</a>
+                        <a class="nav-link" href="#" style="color: #ffffff; text-decoration: none;">Изменить почту</a>
                     </li>
                     <li class="nav-item mt-auto mx-auto">
                         <a class="btn btn-primary" href="{{ route('logout') }}">Выход</a>
@@ -39,8 +39,37 @@
             <nav class="navbar navbar-expand-md navbar-dark bg-gray w-120">
                 <div class="navbar-brand" style="color: grey">Ваш ID - {{ Auth::user()->uuid }}</div>
             </nav>
-        </div>
+                <div class="navbar-brand" style="color: grey">Почта - {{ substr(Auth::user()->email, 0, 1) . str_repeat('*', strpos(Auth::user()->email, '@') - 1) . substr(Auth::user()->email, strpos(Auth::user()->email, '@')) }} </div>
+            <form method="POST" action="{{ route('change-email') }}">
+                @csrf
+
+                @error('current_email')
+                <span class="error">{{ $message }}</span>
+                @enderror
+                <div class="form-group">
+                    <label for="current_email">Текущая почта</label>
+                    <input type="email" class="form-control" id="current_email" name="current_email" >
+                </div>
+
+                @error('new_email')
+                <span class="error">{{ $message }}</span>
+                @enderror
+                <div class="form-group">
+                    <label for="new_email">Новая почта</label>
+                    <input type="email" class="form-control" id="new_email" name="new_email" >
+                </div>
+
+                @error('message-change')
+                <span class="error">{{ ($message) }}</span>
+                @enderror
+                @if (session('message-change'))
+                    <span class="error">{{ session('message-change') }}</span>
+                @endif
+
+                <button type="submit" class="btn btn-primary">Изменить почту</button>
+            </form>
     </div>
+</div>
 </div>
 </body>
 </html>

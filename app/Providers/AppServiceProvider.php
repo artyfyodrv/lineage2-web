@@ -16,11 +16,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(EmailService::class, function () {
             return new EmailService();
         });
-
-        $this->app->bind(PanelService::class, function ()
-        {
-            return new PanelService();
-        });
     }
 
     /**

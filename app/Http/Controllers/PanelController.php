@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangeEmailRequest;
 use App\Http\Requests\ChangePasswordRequest;
 use App\Services\PanelService;
 use Illuminate\Support\Facades\Auth;
@@ -22,11 +23,44 @@ class PanelController extends Controller
         return view('panel.change-password');
     }
 
-    public function changePassword(ChangePasswordRequest $request, PanelService $panelService)
+    public function changePassword(ChangePasswordRequest $request)
     {
-        $check = $panelService->changePassword($request->all(), Auth::user());
+        $request = $request->all();
+        $user = Auth::user();
 
-        return redirect()->back()->withErrors($check);
+        if ($request['current_email'] !== $user['email']) {
+            return redirect()->back()->withErrors(['message-change' => 'Введена неверная почта']);
+        }
+
+        if (!Hash::check($request['current_password'], $user['password'])) {
+            return redirect()->back()->withErrors(['message-change' => 'Введен неверный пароль']);
+        }
+
+        $user['password'] = Hash::make($request['new_password']);
+        $user->save();
+
+
+        return redirect()->back()->with(['message-change' => 'Пароль успешно изменен']);
+    }
+
+    public function changeEmailPage()
+    {
+        return view('panel.change-email');
+    }
+
+
+    public function changeEmail(ChangeEmailRequest $request)
+    {
+        $user = Auth::user();
+
+        if ($request->get('current_email') !== $user['email']) {
+            return redirect()->back()->withErrors(['message-change' => 'Введена неверная почта']);
+        }
+
+        $user['email'] = $request->get('new_email');
+        $user->save();
+
+        return redirect()->back()->with(['message-change' => 'Почта успешно изменена']);
     }
 
     public function logout()
