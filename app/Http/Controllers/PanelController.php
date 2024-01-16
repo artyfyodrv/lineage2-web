@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangePasswordRequest;
+use App\Services\PanelService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -21,22 +22,11 @@ class PanelController extends Controller
         return view('panel.change-password');
     }
 
-    public function changePassword(ChangePasswordRequest $request)
+    public function changePassword(ChangePasswordRequest $request, PanelService $panelService)
     {
-        $data = $request->all();
-        $user = Auth::user();
+        $check = $panelService->changePassword($request->all(), Auth::user());
 
-        if ($data['current_email'] !== $user['email']) {
-            return redirect()->back()->withErrors(['current_email' => 'Введена неверная электронная почта']);
-        }
-
-        if (Hash::check($data['current_password'], $user['password'])) {
-            $user['password'] = Hash::make($data['new_password']);
-            $user->save();
-            return redirect()->back()->with('message-change', 'Пароль успешно изменен');
-        }
-
-        return redirect()->back()->withErrors(['current_password' => 'Введен неверный пароль']);
+        return redirect()->back()->withErrors($check);
     }
 
     public function logout()
