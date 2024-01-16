@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangeEmailRequest;
 use App\Http\Requests\ChangePasswordRequest;
-use App\Services\PanelService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class PanelController extends Controller
 {
@@ -18,12 +19,12 @@ class PanelController extends Controller
         return view('panel.index');
     }
 
-    public function changePasswordPage()
+    public function changePasswordPage(): View
     {
         return view('panel.change-password');
     }
 
-    public function changePassword(ChangePasswordRequest $request)
+    public function changePassword(ChangePasswordRequest $request): RedirectResponse
     {
         $request = $request->all();
         $user = Auth::user();
@@ -43,13 +44,13 @@ class PanelController extends Controller
         return redirect()->back()->with(['message-change' => 'Пароль успешно изменен']);
     }
 
-    public function changeEmailPage()
+    public function changeEmailPage(): View
     {
         return view('panel.change-email');
     }
 
 
-    public function changeEmail(ChangeEmailRequest $request)
+    public function changeEmail(ChangeEmailRequest $request): RedirectResponse
     {
         $user = Auth::user();
 
